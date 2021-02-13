@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="en"><head>
+    
+    <script src="Chart.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8">
+
+  </head>
+  <body>
+    
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script>
+      
+      const xlabels = [];
+      const ytemp = [];
+      chartIt();
+      async function chartIt(){
+        await load();
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: xlabels,
+            //fill: false,
+            datasets: [{
+              label: 'Global averege temperature',
+              data: ytemp,
+          
+            borderColor:'rgba(255, 170, 125, 1)',
+            borderWidth: 1
+        }]
+    },
+
+});
+      }
+      
+      
+      
+      
+      
+      
+      async function load(){
+        const raw = await fetch("ZonAnn.Ts+dSST.csv");
+        const data = await raw.text();
+        const table = data.split("\n").slice(1);
+        //noFill();
+        
+        
+        table.forEach(row=>{
+          const col = row.split(",");
+          const ano = col[0];
+           xlabels.push(ano);
+          const temp = col[1];
+          ytemp.push(parseFloat(temp)+14);
+          
+          console.log(ano, temp);
+          //vertex(mano,mtemp);
+        });
+          
+        
+      }
+    
+    </script>
+    
+    
+  
+
+</body></html>
